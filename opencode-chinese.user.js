@@ -1872,7 +1872,66 @@
         'Open': '打开',
         'Support': '支持',
         'From': '从',
-        'Token': '令牌'
+        'Token': '令牌',
+
+        /* —— 控制台：Go 用量 / 账单补充 —— */
+        '5-hour window': '5 小时窗口',
+        'This week': '本周',
+        'This billing period': '本计费周期',
+        'Workspace agreement limit': '工作区协议限额',
+        'Workspace policy limit': '工作区策略限额',
+        'Personal policy limit': '个人策略限额',
+        'Retry billing': '重试账单',
+        'Retry Go subscription': '重试 Go 订阅',
+        'Shortcuts': '快捷键',
+        'My logs': '我的日志',
+        'API keys': 'API 密钥',
+        'Request agreement changes': '申请调整协议',
+        'Upgrade for higher limits': '升级以获得更高限额',
+        'Workspace admins': '工作区管理员',
+        'Add card': '添加银行卡',
+        'Retry usage': '重试用量',
+        'Workspace usage': '工作区用量',
+        'Personal usage': '个人用量',
+        'Auto-reload': '自动续充',
+        'Invalid JSON': 'JSON 无效',
+        'Refresh workspaces': '刷新工作区',
+        'Unable to load workspaces. Try again.': '无法加载工作区，请重试。',
+
+        /* —— 控制台：登录 / 注册 / 授权 / 设备码 —— */
+        'Log in to OpenCode Console': '登录 OpenCode 控制台',
+        'Continue with': '使用以下方式继续',
+        'Or continue with': '或使用以下方式继续',
+        'email': '邮箱',
+        'Email Address': '邮箱地址',
+        'Don\'t have an account yet?': '还没有账号？',
+        'Create account': '创建账户',
+        'Create Account': '创建账户',
+        'Continue': '继续',
+        'Submit': '提交',
+        'Back to log in': '返回登录',
+        'Use another method': '使用其他方式',
+        'Or use your password': '或使用密码',
+        'Sign in to your existing account to connect it to SSO.': '登录你已有的账户，把它连接到 SSO。',
+        'Sign out and continue': '退出登录并继续',
+        'This account has been deleted': '该账户已被删除',
+        'Too many registration attempts': '注册尝试次数过多',
+        'Your invite session has expired': '你的邀请会话已过期',
+        'Your invitation has expired': '你的邀请已过期',
+        'Unable to start social authentication': '无法启动第三方登录',
+        'You successfully changed your password! You can now log in with your new one.': '密码修改成功！现在可以用新密码登录了。',
+        'Reenter new password': '再次输入新密码',
+        'A new verification email was sent.': '已重新发送验证邮件。',
+        'Resend email': '重新发送邮件',
+        'Select a workspace': '选择工作区',
+        'This authorization link is incomplete. Start the sign-in again from the application.': '该授权链接不完整，请从应用中重新发起登录。',
+        'Return to application': '返回应用',
+        'Authorize': '授权',
+        'Deny': '拒绝',
+        'We couldn\'t verify your email. Please try again.': '无法验证你的邮箱，请重试。',
+        'Signup is not allowed for this account.': '该账户不允许注册。',
+        'Device Code': '设备码',
+        'Unable to verify this device code. Check the code and try again.': '无法验证该设备码，请检查后重试。'
     };
 
     /* ---------- 控制台词典作用域：仅在 /console 下生效，避免影响营销站 ---------- */
@@ -1909,6 +1968,15 @@
         let h = parseInt(hour, 10) % 12;
         if (period === 'PM') h += 12;
         return (h < 10 ? '0' : '') + h + ':' + minute;
+    }
+
+    /** 对一个片段再跑一遍规则（用于组合式文案的内层日期/时长） */
+    function localizeFragment(text) {
+        for (let i = 0; i < REGEXP.length; i++) {
+            const rule = REGEXP[i];
+            if (rule[0].test(text)) return text.replace(rule[0], rule[1]);
+        }
+        return text;
     }
 
     // [正则, 替换（字符串或函数）]
@@ -1950,10 +2018,10 @@
             (m, mo, d, n) => zhMonth(mo) + '月' + d + '日 ' + n + ' 名模型用户'],
         [new RegExp('^(' + MONTH_ABBR + ') (\\d{1,2}) ([\\d.]+[TKM]?)$'),
             (m, mo, d, n) => zhMonth(mo) + '月' + d + '日 ' + n],
-        // 控制台：订阅 / 用量倒计时与百分比
-        [/^Renews in (.+)$/, '$1后自动续订'],
-        [/^Renews (.+)$/, '续订日期 $1'],
-        [/^Resets in (.+)$/, '$1后重置'],
+        // 控制台：订阅 / 用量倒计时与百分比（内层日期与时长再走一遍规则）
+        [/^Renews in (.+)$/, (m, inner) => localizeFragment(inner) + '后自动续订'],
+        [/^Renews (.+)$/, (m, inner) => localizeFragment(inner) + ' 续订'],
+        [/^Resets in (.+)$/, (m, inner) => localizeFragment(inner) + '后重置'],
         [/^(\d+)d (\d+)h$/, '$1 天 $2 小时'],
         [/^(\d+)h (\d+)m$/, '$1 小时 $2 分钟'],
         [/^(\d+)d$/, '$1 天'],
@@ -2247,6 +2315,8 @@
     function boot() {
         State.pageDict = pickPageDict();
         State.consoleDict = pickConsoleDict();
+        // 自检标记：控制台执行 `document.documentElement.dataset.ocZh` 可确认脚本是否在跑
+        try { document.documentElement.setAttribute('data-oc-zh', State.enabled ? 'on' : 'off'); } catch (e) { /* 忽略 */ }
         if (State.enabled) {
             scanAll();
             scheduleScans();

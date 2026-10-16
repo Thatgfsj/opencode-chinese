@@ -42,12 +42,14 @@
 | 数据看板 `/data` | ✅ 区块标题、图例、方法说明、国家/地区名、图表日期与自动生成的摘要句 |
 | 更新日志 `/changelog` | ⚠️ 外壳（标题、空态、按钮）；**发布条目正文保留英文** |
 | 文档站 `/docs/**` | ⚠️ 外壳（侧边栏、搜索、本页目录、主题/语言选择、页脚、页面标题）与「简介」页正文；**其余页面正文保留英文** |
-| **控制台 `/console/**`** | ✅ 用量/账单/点数、Go 订阅面板、API 密钥、成员与角色、集成与提供商、策略与路由、SSO/SCIM、监控告警、支持工具等界面文案（bundle 抽取 1163 条中覆盖 1063 条，91.4%） |
+| **控制台 `/console/**`** | ✅ 用量/账单/点数、Go 订阅面板、API 密钥、成员与角色、集成与提供商、策略与路由、SSO/SCIM、监控告警、支持工具、登录/注册/授权/设备码等界面文案（bundle 抽取 1218 条中覆盖 1115 条，91.5%） |
 | 隐私政策 / 用户协议 | ⚠️ 仅页面标题；**条款正文保留英文原版** |
 
 > 控制台（`/console`，也可通过 `console.opencode.ai` 进入）是独立的纯客户端渲染管理后台，
 > 站点自身**没有 i18n**（英文硬编码在 bundle 里），所以它完全依赖本插件的控制台词典。
-> 未覆盖的 100 条是模型/厂商名（OpenAI、Anthropic、DeepSeek…）、缩写（API、MCP、SSO、JSON）、
+> bundle 里的懒加载 chunk 必须全部抓到才能算准覆盖率——
+> `test/fetch-pages.sh` 会从 shell HTML 取入口再递归抓取，缺 chunk 会低估（也会漏词条）。
+> 未覆盖的 103 条是模型/厂商名（OpenAI、Anthropic、DeepSeek…）、缩写（API、MCP、SSO、JSON）、
 > 示例值（`Acme Inc.`、`owner@example.com`）与运行时内部错误串，按原则本就不译。
 
 ### 为什么不翻译文档正文与法律条款
@@ -177,8 +179,8 @@ node console-coverage.js  # 控制台词典覆盖率（明细写入 test/out/con
   home 2 · zen 0 · go 0 · enterprise 0 · download 0 · brand 0 · data 0 · docs 1
   changelog 241 · privacy 374 · terms 106   ← 全部为发布条目/法律条款正文，属有意保留
 
-【控制台覆盖率】bundle 抽取 1163 条，已汉化 1063 条（91.4%）
-  未覆盖 100 条：模型/厂商名、缩写、示例值、运行时内部错误串
+【控制台覆盖率】bundle 抽取 1218 条，已汉化 1115 条（91.5%）
+  未覆盖 103 条：模型/厂商名、缩写、示例值、运行时内部错误串
 ```
 
 `home` 残留的 2 条是 `GitHub Copilot`、`ChatGPT Plus/Pro`，`docs` 残留 1 条是 `OpenCode Zen`，
@@ -207,6 +209,28 @@ zh_docs    变更 10 处  app.header.home/docs、Web、Console、Policies、Rele
 - **控制台新增文案**：改完运行 `node test/console-coverage.js` 即可看到还剩哪些没覆盖
   （`test/out/console-missing.txt`）。
 - 改完记得跑 `node --check opencode-chinese.user.js` 与 `cd test && node behavior.js`。
+
+---
+
+## 排障：脚本好像没生效
+
+脚本在 `@run-at document-start` 注入，**安装/更新之前就已经打开的标签页不会自动生效**，先按顺序排查：
+
+1. **刷新页面**（F5 / Ctrl+R）。控制台是 SPA，务必整页刷新，不要只在站内点来点去。
+2. **确认油猴里是最新版**：Tampermonkey 面板 → 本脚本应显示版本 `1.0.0`，
+   「安装来源」为 `raw.githubusercontent.com/Thatgfsj/opencode-chinese/...`；
+   若显示的是本地地址或旧版本，点「重新安装」再刷新。
+   脚本头里带 `@updateURL`/`@downloadURL`，之后会自动更新。
+3. **在页面上自检**：F12 → Console → 执行
+
+   ```js
+   document.documentElement.dataset.ocZh   // 期望输出 "on"
+   ```
+
+   - `"on"`：脚本正在运行，若仍是英文，多半是该处文案不在词典里（把文字发我即可补）；
+   - `undefined`：脚本没在这个页面运行 → 检查油猴面板里脚本是否启用、
+     站点访问权限是否为「所有网站」，以及是否有另一个同名脚本被禁用。
+4. **看控制台报错**：F12 → Console 里若有来自本脚本的红色报错，连同页面 URL 一起反馈。
 
 ---
 
