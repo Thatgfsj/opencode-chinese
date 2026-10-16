@@ -187,7 +187,6 @@ node console-coverage.js  # 控制台词典覆盖率（明细写入 test/out/con
 均为产品名，按翻译原则保留原样。
 
 官方中文页回归（`node regression-zh.js`，对比注入前后每个文本节点）：
-
 ```
 home_zh    变更 2 处   Data → 数据、GitHub Stars → GitHub 星标
 zh_zen     变更 13 处  用户评价等英文残留
@@ -195,6 +194,36 @@ zh_data    变更 520 处 AUG 22 → 8月22日 等图表日期
 zh_docs    变更 10 处  app.header.home/docs、Web、Console、Policies、Releases…
 无一处中文被误改，无脚本报错。
 ```
+
+### 用真实登录态复核控制台（维护者用，只读）
+
+控制台大部分界面对未登录用户不可见，bundle 抽取也会漏掉运行时拼接的文案。要"翻全"，可以
+用浏览器登录态把每个页面真实渲染出来逐条核对——**全过程只读浏览，不做任何写操作**：
+
+```bash
+# 1) 复制登录态（只复制 Cookies 与 Local State，不含任何脚本/扩展数据）
+mkdir -p /tmp/oc-sess/Default
+cp -a ~/.config/microsoft-edge/Local\ State /tmp/oc-sess/
+cp -a ~/.config/microsoft-edge/Default/Cookies /tmp/oc-sess/Default/
+
+# 2) 逐页抓取渲染后的文案与可译属性 → test/console-live/*.json
+cd test && node sess-harvest.js
+
+# 3) 与词典对比，列出未覆盖项
+node sess-diff.js            # 汇总数量；--all 打印全部
+node sess-diff.js --all
+
+# 4) 反向验证：注入脚本后逐页统计中文与残留英文
+node sess-verify.js
+
+# 5) 用完删除登录态副本
+rm -rf /tmp/oc-sess
+```
+
+环境变量：`OC_SESS_PROFILE`（登录态目录，默认 `/tmp/oc-sess`）、`OC_EDGE`（浏览器可执行文件路径）。
+
+最近一次复核结果（设置、模型、提供商、控制、集成、Go、日志、审计共 15 个页面）：
+**除用户自己的邮箱外，无残留英文**。
 
 ---
 

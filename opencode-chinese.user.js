@@ -1040,9 +1040,9 @@
         'Revoke API key?': '撤销该 API 密钥？',
         'Personal API keys': '个人 API 密钥',
         'Personal API keys this member created.': '该成员创建的个人 API 密钥。',
-        'Service account': '服务账号',
-        'Service accounts': '服务账号',
-        'Service Accounts': '服务账号',
+        'Service account': '密钥（服务账号）',
+        'Service accounts': '密钥（服务账号）',
+        'Service Accounts': '密钥（服务账号）',
         'Choose service accounts': '选择服务账号',
         'Create an API key to authenticate this service account.': '创建 API 密钥以验证该服务账号。',
         'Failed to create service account': '创建服务账号失败',
@@ -1220,7 +1220,7 @@
         'Theme': '主题',
         'Dark': '深色',
         'Light': '浅色',
-        'System': '跟随系统',
+        'System': '系统',
         'Language': '语言',
         'Timezone': '时区',
 
@@ -1354,7 +1354,6 @@
         'On': '已开启',
         'Copy': '复制',
         'Cancel': '取消',
-        'Close': '关闭',
         'Save': '保存',
         'Search': '搜索',
 
@@ -1863,7 +1862,6 @@
         'Invalid date string': '日期格式无效',
         'Allow workspace administrators to install and manage the OpenCode Slack agent.': '允许工作区管理员安装和管理 OpenCode Slack 智能体。',
         'Control characters are not allowed': '不允许使用控制字符',
-        'Model output limit must leave room for input context': '模型输出上限必须为输入上下文留出空间',
         'Check now': '立即检查',
         'Could not update extra usage. Try again.': '更新额外用量失败，请重试。',
         'Checklist marked as done.': '清单已标记为完成。',
@@ -1931,7 +1929,83 @@
         'We couldn\'t verify your email. Please try again.': '无法验证你的邮箱，请重试。',
         'Signup is not allowed for this account.': '该账户不允许注册。',
         'Device Code': '设备码',
-        'Unable to verify this device code. Check the code and try again.': '无法验证该设备码，请检查后重试。'
+        'Unable to verify this device code. Check the code and try again.': '无法验证该设备码，请检查后重试。',
+
+        /* —— 控制台：设置区 / 模型页 / 日志页（按真实页面逐页核对补充） —— */
+        '(you)': '（你）',
+        'API key': 'API 密钥',
+        'Active keys': '有效密钥',
+        'Add Service Account': '添加密钥（服务账号）',
+        'Add a company name, address, and tax ID to show on your invoices.': '添加公司名称、地址和税号，用于显示在发票上。',
+        'Add details': '添加信息',
+        'Add image': '添加图片',
+        'Add rule': '添加规则',
+        'Auto-recharge off': '自动充值：已关闭',
+        'Choose who a policy applies to, then limit the models they can use,': '选择策略适用的对象，然后限制他们可用的模型，',
+        'Configure SSO to let your identity provider add and remove members automatically.': '配置 SSO，让你的身份提供商自动添加和移除成员。',
+        'Control data training and model regions.': '控制数据训练与模型地区。',
+        'Control templates': '控制模板',
+        'Default, Kind': '默认、类型',
+        'Detailed request activity for the selected range.': '所选时间范围的详细请求活动。',
+        'E.g workspace-wide limits or per-user caps.': '例如：整个工作区的限额，或按用户设置的上限。',
+        'Expires at, Name, Permissions': '过期时间、名称、权限',
+        'Expires at, Name, Permissions, Service account ID': '过期时间、名称、权限、服务账号 ID',
+        'For some members, or for tools, add a rule in': '若要针对部分成员或工具，请在以下位置添加规则：',
+        'Go subscription': 'Go 订阅',
+        'Hosted Web Search': '托管网页搜索',
+        'Loading Web Search usage...': '正在加载网页搜索用量…',
+        'Loading balance…': '正在加载余额…',
+        'Loading model breakdown...': '正在加载模型明细…',
+        'Loading request log...': '正在加载请求日志…',
+        'Low cost coding models for everyone ·': '人人可用的低成本编程模型 ·',
+        'Machine principals for CI and automations ·': '用于 CI 与自动化的机器主体 ·',
+        'No SSO connection configured yet.': '尚未配置 SSO 连接。',
+        'No auto-recharge rule configured.': '尚未配置自动充值规则。',
+        'No policies yet. Every member can use all': '还没有策略。所有成员都可以使用全部',
+        'Payment method ID, Renewal currency, Renewal product': '支付方式 ID、续费币种、续费产品',
+        'Payment method ID, Renewal currency, Renewal product, Subscriber user ID, Use balance': '支付方式 ID、续费币种、续费产品、订阅用户 ID、使用余额',
+        'Per-model breakdown for the selected range.': '所选时间范围内按模型的用量明细。',
+        'Privacy › Training › Free': '隐私 › 训练 › 免费',
+        'Purchase additional workspace credits.': '购买额外的工作区点数。',
+        'Recorded since': '记录起始时间',
+        'Restrict OpenCode to providers configured for this workspace, for everyone.': '限制所有人只能使用该工作区已配置的提供商。',
+        'Sign in with the command for your version.': '使用与你版本对应的命令登录。',
+        'Successful searches for the selected range. Costs are included in total usage.': '所选时间范围内成功的搜索次数；费用已计入总用量。',
+        'Then run': '然后运行',
+        'Usage by Model': '按模型统计的用量',
+        'Use your balance after reaching the limits.': '达到限额后使用余额。',
+        'cap what they can spend, or say what their OpenCode may use.': '限制他们的支出上限，或规定其 OpenCode 可以使用什么。',
+        '· Requires at least one other workspace': '· 需要至少一个其他工作区',
+        'Every change to this workspace\'s configuration, newest first.': '该工作区配置的每一次变更，最新的在前。',
+        'Every inference request in this organization, newest first. Kept for 30 days.': '该组织内的每一次推理请求，最新的在前；保留 30 天。',
+        'a model': '一个模型',
+        'an OpenCode Go model': '一个 OpenCode Go 模型',
+        'and select': '并选择',
+        'available credit': '可用点数',
+        // aria-label / title 类
+        'Allow members to use free models from this provider.': '允许成员使用该提供商的免费模型。',
+        'Automatically enable models added to this provider in the future.': '自动启用以后添加到该提供商的模型。',
+        'Dismiss OpenCode CLI connection command': '关闭 OpenCode CLI 连接命令',
+        'Go subscription settings': 'Go 订阅设置',
+        'Go usage limits': 'Go 用量限额',
+        'Monthly Go usage': '每月 Go 用量',
+        'Weekly Go usage': '每周 Go 用量',
+        'Rolling Go usage': '滚动窗口 Go 用量',
+        'Notifications alt+T': '通知 alt+T',
+        'OpenCode actions': 'OpenCode 操作',
+        'Requires at least one other workspace': '需要至少一个其他工作区',
+        'Scrollable region': '可滚动区域',
+        'Set up Console MCP': '设置 Console MCP',
+        'Set up Hosted Web Search': '设置托管网页搜索',
+        'Hourly Cost': '每小时费用',
+        'Hourly Tokens': '每小时 Token 数',
+        'Hourly Requests': '每小时请求数',
+        'Time': '时间',
+        'Duration': '耗时',
+        'Change': '变更',
+        'Features': '功能',
+        'Keys': '密钥',
+        'Free': '免费',
     };
 
     /* ---------- 控制台词典作用域：仅在 /console 下生效，避免影响营销站 ---------- */
@@ -2042,6 +2116,55 @@
             '看看哪些模型真正赢得了用量、格局如何变化，以及这对成本意味着什么。']
     ];
 
+    /* ---------- 控制台专用正则（仅在 /console 下生效） ---------- */
+    const REGEXP_CONSOLE = [
+        // 数量：1 model / 7 changes / 49 enabled models / Owner · 1 member
+        [/^(\d+) (model|models)$/, '$1 个模型'],
+        [/^(\d+) (provider|providers)$/, '$1 个提供商'],
+        [/^(\d+) (result|results)$/, '$1 条结果'],
+        [/^(\d+) (change|changes)$/, '$1 项变更'],
+        [/^(\d+) (member|members)$/, '$1 名成员'],
+        [/^(\d+) enabled models$/, '已启用 $1 个模型'],
+        [/^Showing (\d+)$/, '显示 $1 条'],
+        [/^Owner · (\d+) member$/, '所有者 · $1 名成员'],
+        // 模型启用状态：Beam enabled / GPT-5 Codex enabled
+        [/^(.+) enabled$/, '$1 已启用'],
+        // 时长与相对时间：2h ago / 1m 16s / 12.25 s
+        [/^(\d+)([mhd]) ago$/, (m, n, unit) => n + ({ m: ' 分钟', h: ' 小时', d: ' 天' })[unit] + '前'],
+        [/^(\d+)m (\d+)s$/, '$1 分 $2 秒'],
+        [/^([\d.]+) s$/, '$1 秒'],
+        // 表格列名汇总（aria-label / title）
+        [/^([\d,]+) in · ([\d,]+) out$/, '输入 $1 · 输出 $2'],
+        [/^View request (.+)$/, '查看请求 $1'],
+        [/^Actions for (.+)$/, '$1 的操作'],
+        [/^(.+) actions$/, '$1 的操作'],
+        [/^Role for (.+)$/, '$1 的角色'],
+        [/^Download invoice (.+)$/, '下载发票 $1'],
+        [/^Created (.+?), by (.+?), (.+)$/, '创建了 $1，操作者 $2，$3'],
+        [/^(\d+)% of the subscription period remaining$/, '订阅周期剩余 $1%'],
+        [/^(\d+) more features?$/, '还有 $1 项功能'],
+        [/^Time range: (.+)$/, '时间范围：$1'],
+        [/^Switch workspace: (.+)$/, '切换工作区：$1'],
+        [/^Paid period ends (.+)$/, '已付周期截止 $1'],
+        [new RegExp('^(' + MONTH_SHORT + ') (\\d{1,2}), (\\d{1,2}):(\\d{2})$'),
+            (m, mo, d, hh, mm) => zhMonth(mo) + '月' + d + '日 ' + hh + ':' + mm],
+        // 带秒的时间戳：Oct 17, 02:33:36
+        [new RegExp('^(' + MONTH_SHORT + ') (\\d{1,2}), (\\d{1,2}):(\\d{2}):(\\d{2})$'),
+            (m, mo, d, hh, mm, ss) => zhMonth(mo) + '月' + d + '日 ' + hh + ':' + mm + ':' + ss],
+        [new RegExp('^(' + MONTH_SHORT + ') (\\d{1,2}), (\\d{4}), (\\d{1,2}):(\\d{2})$'),
+            (m, mo, d, y, hh, mm) => y + '年' + zhMonth(mo) + '月' + d + '日 ' + hh + ':' + mm]
+    ];
+
+    /* ---------- 控制台词典的小写索引（兜住大小写不一致，如 Cache Read / Cache read） ---------- */
+    const I18N_CONSOLE_LOWER = (function () {
+        const map = Object.create(null);
+        for (const k in I18N_CONSOLE) {
+            const lk = k.toLowerCase();
+            if (!(lk in map)) map[lk] = I18N_CONSOLE[k];
+        }
+        return map;
+    })();
+
     /* =========================== 运行环境 =========================== */
 
     const store = {
@@ -2107,11 +2230,21 @@
         if (!key || !HAS_LATIN.test(key) || HAS_CJK.test(key)) return null;
 
         let value = I18N[key];
-        if (value === undefined && State.consoleDict) value = State.consoleDict[key];
+        if (value === undefined && State.consoleDict) {
+            value = State.consoleDict[key];
+            // 兜底：控制台文案大小写不统一（Cache Read / Cache read、API Keys / API keys）
+            if (value === undefined) value = I18N_CONSOLE_LOWER[key.toLowerCase()];
+        }
         if (value === undefined && State.pageDict) value = State.pageDict[key];
         if (value === undefined) {
             for (let i = 0; i < REGEXP.length; i++) {
                 const rule = REGEXP[i];
+                if (rule[0].test(key)) { value = key.replace(rule[0], rule[1]); break; }
+            }
+        }
+        if (value === undefined && State.consoleDict) {
+            for (let i = 0; i < REGEXP_CONSOLE.length; i++) {
+                const rule = REGEXP_CONSOLE[i];
                 if (rule[0].test(key)) { value = key.replace(rule[0], rule[1]); break; }
             }
         }
