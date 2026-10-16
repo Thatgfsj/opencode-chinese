@@ -1,0 +1,15 @@
+{
+  "name": "opencode-chinese-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "OpenCode 中文化插件的覆盖率与行为验证台",
+  "scripts": {
+    "fetch": "bash fetch-pages.sh",
+    "check": "node check.js",
+    "behavior": "node behavior.js",
+    "test": "node behavior.js && node check.js"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3"
+  }
+}
