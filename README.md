@@ -42,7 +42,13 @@
 | 数据看板 `/data` | ✅ 区块标题、图例、方法说明、国家/地区名、图表日期与自动生成的摘要句 |
 | 更新日志 `/changelog` | ⚠️ 外壳（标题、空态、按钮）；**发布条目正文保留英文** |
 | 文档站 `/docs/**` | ⚠️ 外壳（侧边栏、搜索、本页目录、主题/语言选择、页脚、页面标题）与「简介」页正文；**其余页面正文保留英文** |
+| **控制台 `/console/**`** | ✅ 用量/账单/点数、Go 订阅面板、API 密钥、成员与角色、集成与提供商、策略与路由、SSO/SCIM、监控告警、支持工具等界面文案（bundle 抽取 1163 条中覆盖 1063 条，91.4%） |
 | 隐私政策 / 用户协议 | ⚠️ 仅页面标题；**条款正文保留英文原版** |
+
+> 控制台（`/console`，也可通过 `console.opencode.ai` 进入）是独立的纯客户端渲染管理后台，
+> 站点自身**没有 i18n**（英文硬编码在 bundle 里），所以它完全依赖本插件的控制台词典。
+> 未覆盖的 100 条是模型/厂商名（OpenAI、Anthropic、DeepSeek…）、缩写（API、MCP、SSO、JSON）、
+> 示例值（`Acme Inc.`、`owner@example.com`）与运行时内部错误串，按原则本就不译。
 
 ### 为什么不翻译文档正文与法律条款
 
@@ -79,6 +85,10 @@
 | GitHub Stars | GitHub 星标 | 站点官方中文此条漏译 |
 | Fig 1. | 图 1. | |
 | coding models | 编程模型 | |
+| Credits（控制台） | 点数 | 与 `Limits`（限额）、`Balance`（余额）区分开 |
+| workspace | 工作区 | |
+| service account | 服务账号 | |
+| Credits / allowance | 点数 / 额度 | 控制台与站点文案保持一致 |
 
 ### 顺带修掉的站点小问题
 
@@ -130,20 +140,24 @@ document-start
 - **安全**：`script/style/code/pre/kbd/textarea/svg/contenteditable/translate="no"` 整棵子树跳过，
   品牌名与命令绝不会被改；只改文本与少数属性，不动 DOM 结构。
 - **多义词**：`PAGE_I18N` 按路径提供页面级词条，例如 Zen 页评价里的 `With` → 「用」。
+- **词典分层**：`I18N` 全站生效；`I18N_CONSOLE` 只在 `/console` 下参与匹配，
+  这样控制台里的通用词（`Open`、`Name`、`Type`、`From`、`Service`…）不会影响营销站。
 
 ---
 
 ## 验证
 
-`test/` 下是一套基于 jsdom 的验证台：把脚本注入**真实页面快照**，统计仍为英文的可见文本。
+`test/` 下是一套基于 jsdom 的验证台：把脚本注入**真实页面快照**，统计仍为英文的可见文本；
+控制台因为是纯客户端渲染，改为从真实 bundle 抽取文案、逐条喂给脚本的翻译函数。
 
 ```bash
 cd test
-npm install          # 安装 jsdom
-./fetch-pages.sh     # 抓取验证用的页面快照到 test/raw/（未入库，必须先执行）
-node behavior.js     # 行为测试
-node check.js        # 覆盖率检查（明细写入 test/out/）
+npm install           # 安装 jsdom
+./fetch-pages.sh      # 抓取页面快照与控制台 bundle 到 test/raw/（未入库，必须先执行）
+node behavior.js      # 行为测试
+node check.js         # 营销站/文档站覆盖率（明细写入 test/out/）
 node regression-zh.js # 官方中文页回归（只应补译英文残留，不得破坏中文）
+node console-coverage.js  # 控制台词典覆盖率（明细写入 test/out/console-missing.txt）
 ```
 
 最近一次运行结果：
@@ -159,9 +173,12 @@ node regression-zh.js # 官方中文页回归（只应补译英文残留，不�
   ✅ 停用开关生效
   ✅ 菜单：写 oc_locale Cookie、/docs/agents → /docs/zh-cn/agents、可还原、可剥离 /zh 前缀
 
-【覆盖率】 残留英文文本
+【营销站/文档站覆盖率】 残留英文文本
   home 2 · zen 0 · go 0 · enterprise 0 · download 0 · brand 0 · data 0 · docs 1
   changelog 241 · privacy 374 · terms 106   ← 全部为发布条目/法律条款正文，属有意保留
+
+【控制台覆盖率】bundle 抽取 1163 条，已汉化 1063 条（91.4%）
+  未覆盖 100 条：模型/厂商名、缩写、示例值、运行时内部错误串
 ```
 
 `home` 残留的 2 条是 `GitHub Copilot`、`ChatGPT Plus/Pro`，`docs` 残留 1 条是 `OpenCode Zen`，
@@ -181,14 +198,14 @@ zh_docs    变更 10 处  app.header.home/docs、Web、Console、Policies、Rele
 
 ## 自定义
 
-- **加词条**：在 `opencode-chinese.user.js` 的 `I18N` 里追加 `'English': '中文'`。
-  键必须是**单个文本节点的完整内容**（可用开发者工具查看），首尾不要带空格；
-  引擎会自动折叠节点内部换行、统一弯引号，所以不必为换行写法额外加词条。
+- **加词条**：在 `opencode-chinese.user.js` 的 `I18N`（全站）或 `I18N_CONSOLE`（仅 `/console`）
+  里追加 `'English': '中文'`。键必须是**单个文本节点的完整内容**（可用开发者工具查看），
+  首尾不要带空格；引擎会自动折叠节点内部换行、统一弯引号，所以不必为换行写法额外加词条。
 - **加动态规则**：在 `REGEXP` 里追加 `[/正则/, '替换']`，替换串支持 `$1`；需要计算时用函数
   `(m, g1) => '...'`。
 - **页面级多义词**：在 `PAGE_I18N` 中按路径前缀添加。
-- **发布到 Greasy Fork 前**：把头部的 `@namespace`、`@supportURL` 改成你自己的仓库地址
-  （Tampermonkey 用 `@namespace` 区分同名脚本并检查更新）。
+- **控制台新增文案**：改完运行 `node test/console-coverage.js` 即可看到还剩哪些没覆盖
+  （`test/out/console-missing.txt`）。
 - 改完记得跑 `node --check opencode-chinese.user.js` 与 `cd test && node behavior.js`。
 
 ---
@@ -196,9 +213,11 @@ zh_docs    变更 10 处  app.header.home/docs、Web、Console、Policies、Rele
 ## 已知限制
 
 - 站点为 SolidStart 单页应用，首屏水合期间会重绘部分节点；脚本用「多次补扫 + MutationObserver」
-  兜住这种情况，但极端慢速网络下可能有一瞬间仍显示英文。
+  兜住这种情况，但极端慢速网络下可能有一瞬间仍显示英文。控制台（React SPA）同理。
 - 站点文案会随版本更新，新增文案若不在词典中会保持英文，欢迎按上面的方式补充。
-- 数据看板的图表由运行时数据生成，若站点改变图表提示文案格式，相关正则需同步调整。
+- 控制台词典来自对当前 bundle 的全量抽取（覆盖率 91.4%），剩余未译项为厂商/模型名、
+  技术缩写、示例值与运行时内部错误串；若站点新增界面文案，覆盖率会下降，需按上表补充。
+- 数据看板与控制台的图表由运行时数据生成，若站点改变提示文案格式，相关正则需同步调整。
 
 ## 许可与致谢
 

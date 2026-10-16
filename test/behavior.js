@@ -118,7 +118,8 @@ function boot(file) {
     await sleep(500);
     const text = data.window.document.body.textContent;
     assert('图表日期 AUG 22 → 8月22日', text.includes('8月22日'));
-    assert('更新时间转 24 小时制', /15:18 UTC/.test(text));
+    assert('更新时间转 24 小时制', /更新于 \d{1,2}月\d{1,2}日 \d{2}:\d{2} UTC/.test(text) && !/\d{1,2}:\d{2} (AM|PM) UTC/.test(text),
+      (text.match(/更新于[^。]{0,24}/) || [''])[0]);
     data.window.close();
 
     const home = boot('home.html');

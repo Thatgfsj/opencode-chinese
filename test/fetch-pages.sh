@@ -32,3 +32,21 @@ for item in "${pages[@]}"; do
   printf '%-26s %8s bytes\n' "$name" "$(wc -c < "raw/${name}.html")"
 done
 echo "快照已保存到 test/raw/"
+
+# 控制台（/console）是客户端渲染的 SPA，界面文案全在 bundle 里，供 console-coverage.js 使用
+echo
+echo "下载控制台 bundle ..."
+mkdir -p raw/console/assets
+console_assets=(
+  "index-uMEjDk-9.js"
+  "app-pages-FyA1OWx4.js"
+  "meters-XjwhZ6SV.js"
+  "data-table-Ct8kXydw.js"
+  "select-input-RekMIwnJ.js"
+  "icon-V2H2B8XT.js"
+)
+for a in "${console_assets[@]}"; do
+  curl -sSL --max-time 60 -A "$UA" "https://opencode.ai/console/assets/$a" -o "raw/console/assets/$a"
+  printf '%-26s %8s bytes\n' "console/$a" "$(wc -c < "raw/console/assets/$a")"
+done
+echo "控制台 bundle 已保存到 test/raw/console/assets/"
