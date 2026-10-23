@@ -61,3 +61,15 @@ for round in 1 2 3 4 5; do
 done
 printf '控制台 bundle 共 %s 个 chunk，已保存到 test/raw/console/assets/（%s）\n' \
   "$(ls raw/console/assets/*.js 2>/dev/null | wc -l)" "$(du -sh raw/console/assets | cut -f1)"
+
+# v2 文档站（/v2/docs）：独立 Astro 站点，供 check-v2.js 做外壳/标题回归
+echo
+echo "下载 v2 文档页 ..."
+mkdir -p raw/v2-docs
+v2_pages=(index config migrate-v1 troubleshooting agents models skills themes commands plugins providers websearch network snapshots compaction formatters references attachments tools mcp-servers permissions policies instructions warming cli build api console)
+for p in "${v2_pages[@]}"; do
+  url="https://opencode.ai/v2/docs/${p}/"
+  [ "$p" = "index" ] && url="https://opencode.ai/v2/docs/"
+  curl -sSL --max-time 60 -A "$UA" "$url" -o "raw/v2-docs/${p}.html"
+done
+printf 'v2 文档页：%s 个 → test/raw/v2-docs/\n' "$(ls raw/v2-docs/*.html 2>/dev/null | wc -l)"

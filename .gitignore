@@ -14,3 +14,5 @@ test/raw/
 
 # 真实登录态复核产物（含个人文案，不入库）
 test/console-live/
+# v2 文档站回归快照（由 fetch-pages.sh 生成）
+test/raw/v2-docs/
