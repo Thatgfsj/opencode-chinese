@@ -949,7 +949,10 @@
         'required': '必填',
         'optional': '可选',
         'No description': '无描述',
-        'Operation ID': '操作 ID'
+        'Operation ID': '操作 ID',
+        'CLI navigation': 'CLI 导航',
+        'Build navigation': '构建导航',
+        'Console navigation': '控制台导航'
     };
 
     /* ---------- 控制台 /console（管理后台；站点无 i18n，全部靠本词典） ---------- */

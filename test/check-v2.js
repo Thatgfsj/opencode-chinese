@@ -46,7 +46,7 @@ function collect(window) {
   }
   return {
     nodes,
-    nav: [...doc.querySelectorAll('header nav a')].map((a) => a.textContent.trim()).filter(Boolean),
+    nav: [...doc.querySelectorAll('header nav a, details.mobile-navigation summary')].map((a) => a.textContent.trim()).filter(Boolean),
     side: [...doc.querySelectorAll('nav.docs-sidebar a')].map((a) => a.textContent.trim()).filter(Boolean),
     toc: [...doc.querySelectorAll('nav.docs-toc a')].map((a) => a.textContent.trim()).filter(Boolean),
     heads: [...doc.querySelectorAll('h1, h2, h3')].map((h) => h.textContent.replace(/\s+/g, ' ').trim()),
